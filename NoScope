@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import re
 import socket
 import sys
@@ -6,17 +8,29 @@ from colorama import Fore, Style, init
 
 init(autoreset=True)  # Initialize Colorama
 
+
+
 def resolve_domain(domain_name):
+    hasWWW = False
+    if domain_name[3:] == 'www':
+        hasWWW = True
+    
     try:
-        domain_name2 = "www." + domain_name
-        ip_address = socket.gethostbyname(domain_name2)
-        return {"IP":ip_address, "URL":domain_name2}
-    except:
         try:
+            # Resolve the domain to an IP address
             ip_address = socket.gethostbyname(domain_name)
             return {"IP":ip_address, "URL":domain_name}
-        except Exception as e:
-            return None
+
+        except:
+            if hasWWW:
+                domain_name = re.sub(r'^www\.', '', domain_name)
+            else:
+                domain_name = 'www.' + domain_name
+            ip_address = socket.gethostbyname(domain_name)
+            return {"IP":ip_address, "URL":domain_name}
+
+    except Exception as e:
+        return None
 
 
 def sanitise_url(url):
@@ -105,6 +119,9 @@ def process_file(file_path):
     except FileNotFoundError:
         print(f"File {file_path} not found. Please check the file path.")
 
+
+
+
 if __name__ == "__main__":
     print(r"""
 
@@ -116,7 +133,7 @@ if __name__ == "__main__":
     /_/ |_/\____/____/\___/\____/ .___/\___/ 
                                /_/           
 
-    - by Jack Mason
+- by Jack Mason
 
 
 """)

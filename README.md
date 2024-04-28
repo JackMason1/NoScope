@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-# nosc0pe
-=======
-# nosc0pe
+# NoScope
 
-nosc0pe is a Python-based tool designed for network analysis and security testing. It provides functionalities such as domain name resolution, IP address expansion, and URL sanitization to assist in the evaluation of network resources and security postures. By leveraging `nosc0pe`, users can quickly resolve domain names to IP addresses, expand IP ranges, and assess URLs for potential security concerns.
+NoScope is a Python-based tool designed for network analysis and security testing. It provides functionalities such as domain name resolution, IP address expansion, and URL sanitization to assist in the evaluation of network resources and security postures. By leveraging `NoScope`, users can quickly resolve domain names to IP addresses, expand IP ranges, and assess URLs for potential security concerns.
 
 ## Features
 
@@ -15,25 +12,18 @@ nosc0pe is a Python-based tool designed for network analysis and security testin
 
 ## Installation
 
-Before installing nosc0pe, ensure you have Python 3.x installed on your system. You will also need to install the required dependencies:
+Before installing NoScope, ensure you have Python 3.x installed on your system. You will also need to install the required dependencies. To do this run the startup script:
 
 ```bash
-pip install -r requirements.txt
-```
-
-`requirements.txt` should include:
-```
-netaddr
-colorama
-tabulate
+./setup
 ```
 
 ## Usage
 
-To use nosc0pe, run the following command from the terminal, replacing `filename.txt` with the path to your input file:
+To use NoScope, run the following command from the terminal, replacing `filename.txt` with the path to your input file:
 
 ```bash
-python nosc0pe.py filename.txt
+noscope filename.txt
 ```
 
 The input file should contain IP addresses, IP ranges, or URLs (one per line). The tool will process these inputs to resolve IPs, expand ranges, and sanitize URLs as configured.
@@ -46,4 +36,3 @@ The input file can include:
 - URLs (e.g., `https://example.com`)
 
 Each entry should be on a separate line.
->>>>>>> 5d94bdd (Initial commit)

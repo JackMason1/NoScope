@@ -1,0 +1,11 @@
+#!/bin/bash
+
+pip3 install --upgrade pip
+pip3 install -r requirements.txt
+
+# Move NetScan to ~/bin and make it executable
+mv NoScope /usr/local/bin/
+chmod +x /usr/local/bin/NoScope
+
+echo "NoScope has been moved to /usr/local/bin/"
+echo "To run the script please use: python3 noscope file.txt"

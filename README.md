@@ -23,7 +23,7 @@ sudo ./setup
 To use NoScope, run the following command from the terminal, replacing `filename.txt` with the path to your input file:
 
 ```bash
-noscope filename.txt
+NoScope filename.txt
 ```
 
 The input file should contain IP addresses, IP ranges, or URLs (one per line). The tool will process these inputs to resolve IPs, expand ranges, and sanitize URLs as configured.

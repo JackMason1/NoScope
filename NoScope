@@ -80,33 +80,34 @@ def process_file(file_path):
         with open(file_path, "r") as file:
             lines = file.read().split('\n')
             for line in lines:
-                line = line.strip()
-                if re.match(ip_pattern2, line):
-                    items = process_ip(line)
-                    for item in items:
-                        ip = item["IP"]
-                        print (ip)
-                        if ip not in seen_IPs:
-                            ip_dict[ip] = {"IP": ip, "URL": ""}
-                            seen_IPs.add(ip)
-                elif re.match(ip_pattern, line):
-                    if line in seen_IPs:
-                        numOfDupes += 1
-                        print("Duplicate IP", numOfDupes, ": ", line)
+                if line != "":
+                    line = line.strip()
+                    if re.match(ip_pattern2, line):
+                        items = process_ip(line)
+                        for item in items:
+                            ip = item["IP"]
+                            print (ip)
+                            if ip not in seen_IPs:
+                                ip_dict[ip] = {"IP": ip, "URL": ""}
+                                seen_IPs.add(ip)
+                    elif re.match(ip_pattern, line):
+                        if line in seen_IPs:
+                            numOfDupes += 1
+                            print("Duplicate IP", numOfDupes, ": ", line)
+                        else:
+                            ip_dict[line] = {"IP": line, "URL": ""}
+                            seen_IPs.add(line)
                     else:
-                        ip_dict[line] = {"IP": line, "URL": ""}
-                        seen_IPs.add(line)
-                else:
-                    address = sanitise_url(line)
-                    sanitise_address = resolve_domain(address)
-                    if sanitise_address is None:
-                        print("\n\nInvalid URL -", f"{Fore.RED}{address}{Style.RESET_ALL}\n\n")
-                    else:
-                        ip = sanitise_address["IP"]
-                        if ip not in seen_IPs:
-                            red_ips.add(ip)
-                        ip_dict.setdefault(ip, {"IP": ip, "URL": ""})
-                        ip_dict[ip]["URL"] += sanitise_address["URL"] + '\n'
+                        address = sanitise_url(line)
+                        sanitise_address = resolve_domain(address)
+                        if sanitise_address is None:
+                            print("\n\nInvalid URL -", f"{Fore.RED}{address}{Style.RESET_ALL}\n\n")
+                        else:
+                            ip = sanitise_address["IP"]
+                            if ip not in seen_IPs:
+                                red_ips.add(ip)
+                            ip_dict.setdefault(ip, {"IP": ip, "URL": ""})
+                            ip_dict[ip]["URL"] += sanitise_address["URL"] + '\n'
 
             IP_list = list(ip_dict.values())
             print(generate_table(IP_list, red_ips), "\n")

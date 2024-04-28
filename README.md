@@ -15,7 +15,7 @@ NoScope is a Python-based tool designed for network analysis and security testin
 Before installing NoScope, ensure you have Python 3.x installed on your system. You will also need to install the required dependencies. To do this run the startup script:
 
 ```bash
-./setup
+sudo ./setup
 ```
 
 ## Usage

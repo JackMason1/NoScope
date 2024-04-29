@@ -35,7 +35,6 @@ def resolve_domain(domain_name):
 
 def sanitise_url(url):
     url = re.sub(r'^https?://', '', url)
-    url = re.sub(r'^www\.', '', url)
     url = url.split(':')[0].split('/')[0].split('#')[0].split('?')[0]
     return url
 
@@ -74,6 +73,7 @@ def process_file(file_path):
     ip_dict = {}  # Dictionary to hold IPs and their URLs
     seen_IPs = set()  # Set to track seen IPs
     red_ips = set()  # Set to track IPs to be colored red
+    domian_list = []
     numOfDupes = 0
 
     try:
@@ -86,10 +86,12 @@ def process_file(file_path):
                         items = process_ip(line)
                         for item in items:
                             ip = item["IP"]
-                            print (ip)
                             if ip not in seen_IPs:
                                 ip_dict[ip] = {"IP": ip, "URL": ""}
                                 seen_IPs.add(ip)
+                            else:
+                                numOfDupes += 1
+                                print("Duplicate IP", numOfDupes, ": ", ip)
                     elif re.match(ip_pattern, line):
                         if line in seen_IPs:
                             numOfDupes += 1
@@ -101,13 +103,20 @@ def process_file(file_path):
                         address = sanitise_url(line)
                         sanitise_address = resolve_domain(address)
                         if sanitise_address is None:
-                            print("\n\nInvalid URL -", f"{Fore.RED}{address}{Style.RESET_ALL}\n\n")
+                            print("Invalid URL -", f"{Fore.RED}{address}{Style.RESET_ALL}\n\n")
                         else:
-                            ip = sanitise_address["IP"]
-                            if ip not in seen_IPs:
-                                red_ips.add(ip)
-                            ip_dict.setdefault(ip, {"IP": ip, "URL": ""})
-                            ip_dict[ip]["URL"] += sanitise_address["URL"] + '\n'
+                            domian_list.append(sanitise_address)
+
+
+            for domain in domian_list:
+                ip = domain["IP"]
+                if ip not in seen_IPs:
+                    red_ips.add(ip)
+            
+                ip_dict.setdefault(ip, {"IP": ip, "URL": ""})
+                ip_dict[ip]["URL"] += domain["URL"] + '\n'
+
+                
 
             IP_list = list(ip_dict.values())
             print(generate_table(IP_list, red_ips), "\n")
